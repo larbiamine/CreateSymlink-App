@@ -51,7 +51,7 @@ main = MainWindow()
 engine.rootContext().setContextProperty("backend", main)
 
 # Load QML File
-engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))
+engine.load(os.path.join(os.path.dirname(__file__), "main.qml"))
 
 # Check Exit App
 if not engine.rootObjects():
