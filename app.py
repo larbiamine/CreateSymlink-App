@@ -11,7 +11,6 @@ class MainWindow(QObject):
     def __init__(self):
         QObject.__init__(self)
 
-
     @Slot(str, str)
     def makeLink(self, source, destination):
         if(source and destination):
