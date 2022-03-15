@@ -128,12 +128,12 @@ ApplicationWindow{
     FileDialog {
         id: destinationFileDialog
         title : "Choose destination File"
+        currentFile: sourceFileDialog.selectedFile
         fileMode : FileDialog.SaveFile
     }
 
     Text{
         id: destinationFileName
-        // text: qsTr(destinationFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""))
         text: qsTr(destinationFileDialog.selectedFile.toString().replace(/^(file:\/{3})/,""))
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
@@ -143,14 +143,25 @@ ApplicationWindow{
         font.pointSize: 10
     }
 
+    Text{
+        id: resulttext
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: destinationFileName.bottom
+        font.pointSize: 10
+        anchors.topMargin: 10       
+        anchors.bottomMargin: 10    
+    }
 
     // BUTTON LOGIN
     Button{
         id: buttonLogin
         width: 300
         text: qsTr("Create")
-        anchors.top: destinationFileName.bottom
-        anchors.topMargin: 10        
+        anchors.top: resulttext.bottom
+        anchors.topMargin: 10          
         anchors.horizontalCenter: parent.horizontalCenter
         onClicked: backend.makeLink(sourceFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""), 
                                     destinationFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""))
@@ -159,5 +170,16 @@ ApplicationWindow{
     
     Connections {
         target: backend
-    }    
+        function onSignalCreate(boolValue, returned) {
+            if(boolValue){
+                resulttext.text = returned
+                resulttext.color = "#007a6c"
+
+
+            } else{
+                resulttext.text = "Error " + returned
+                resulttext.color = "#D84315"
+            }
+        }    
+    }
 }

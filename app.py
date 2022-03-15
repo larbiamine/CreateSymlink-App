@@ -1,6 +1,6 @@
 import sys
 import os
-
+import subprocess
 # IMPORT MODULES
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
@@ -11,41 +11,34 @@ class MainWindow(QObject):
     def __init__(self):
         QObject.__init__(self)
 
+    signalCreate = Signal(bool, str)
     @Slot(str, str)
     def makeLink(self, source, destination):
         if(source and destination):
-            # sourceFileName = os.path.basename(source)
-
-            # destinationisfile = os.path.isfile(destination) 
-
             source = "\"" + source + "\""
-            print(source)
-
-
-            destination = "\"" + destination + "\""
-   
-            print(destination)
-             
+            destination = "\"" + destination + "\""       
             command = "mklink "+destination+" "+source
-            print(command)
             os.system(command)
+            result = "symbolic link created for \n"+destination+"\n <<===>> \n"+source
+            self.signalCreate.emit(True, result)
         else:
-            print("Login error!")    
+            self.signalCreate.emit(False, "invalid source and destination")
+            print("Error")    
 
 
 # INSTACE CLASS
-if __name__ == "__main__":
-    app = QGuiApplication(sys.argv)
-    engine = QQmlApplicationEngine()
 
-    # Get Context
-    main = MainWindow()
-    engine.rootContext().setContextProperty("backend", main)
+app = QGuiApplication(sys.argv)
+engine = QQmlApplicationEngine()
 
-    # Load QML File
-    engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))
+# Get Context
+main = MainWindow()
+engine.rootContext().setContextProperty("backend", main)
 
-    # Check Exit App
-    if not engine.rootObjects():
-        sys.exit(-1)
-    sys.exit(app.exec())
+# Load QML File
+engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))
+
+# Check Exit App
+if not engine.rootObjects():
+    sys.exit(-1)
+sys.exit(app.exec())
