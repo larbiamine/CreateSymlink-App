@@ -3,6 +3,9 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 6
 import QtQuick.Controls.Material 2.15
 import QtQuick.Dialogs
+import Qt.labs.platform as PlatformControls
+
+
 import QtQuick.Layouts
 
 ApplicationWindow{
@@ -29,9 +32,9 @@ ApplicationWindow{
             left: parent.left
             right: parent.right
             top: parent.top
-            margins: 50
+            topMargin : 50
         }
-        radius: 10
+       // radius: 10
 
         Text{
             text: qsTr("Create Symlink")
@@ -57,14 +60,15 @@ ApplicationWindow{
     RowLayout  {
         id : chooseTypeRadio
         spacing: 0
+
         RadioButton {
             id: fileradio
-            checked: true
             text: qsTr("File")
         }
 
         RadioButton {
             id: directoryradio
+            checked: true
             text: qsTr("Directory")
         }
         anchors.topMargin: 10 
@@ -75,37 +79,37 @@ ApplicationWindow{
 
     // Source File
     MenuItem {
+        color: "#5C6BC0"
         id: source
         text: "Source: (Choose..)"
-        onTriggered: sourceFileDialog.open()
+        onTriggered: {
+            if(fileradio.checked){
+                sourceFileDialog.open()
+            }else{
+                sourceFolderDialog.open()
+            }
+        }
         width: 300
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: chooseTypeRadio.bottom
         anchors.topMargin: 50
     }
+
+
+
     FileDialog {
         id: sourceFileDialog
         title : "Open Source File"    
     }
 
-    // FolderDialog {
-    //     id: sourcefolderDialog
-    //     title : "Open Source Folder"
-    // }
-
-    // if(fileradio.checked){
-    //     sourceFileDialog.visible: true
-    //     sourcefolderDialog.visible: false
-    // }else{
-    //     sourceFileDialog.visible:  false
-    //     sourcefolderDialog.visible: true
-    // }
-
-
-
+    PlatformControls.FolderDialog {
+        id: sourceFolderDialog
+        title : "Open Source Folder"
+        options : PlatformControls.FolderDialog.ShowDirsOnly
+    }
 
     Text{
-        text: qsTr(sourceFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""))
+        text: qsTr(sourceFileDialog.currentFile.toString().replace(/^(file:\/{3})/,"") + sourceFolderDialog.currentFolder.toString().replace(/^(file:\/{3})/,""))
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         color: "#ffffff"
@@ -118,7 +122,13 @@ ApplicationWindow{
     MenuItem {
         id: destination
         text: "Destination: (Choose..)"
-        onTriggered: destinationFileDialog.open()
+        onTriggered: {
+            if(directoryradio.checked){
+                destinationFolderDialog.open()
+            }else{
+                destinationFileDialog.open()
+            }
+        }
         width: 300
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: source.bottom
@@ -130,11 +140,23 @@ ApplicationWindow{
         title : "Choose destination File"
         currentFile: sourceFileDialog.selectedFile
         fileMode : FileDialog.SaveFile
+        
+    }
+    PlatformControls.FolderDialog {
+        id: destinationFolderDialog
+        title : "Open destination Folder"
+        options : PlatformControls.FolderDialog.ShowDirsOnly
     }
 
     Text{
         id: destinationFileName
-        text: qsTr(destinationFileDialog.selectedFile.toString().replace(/^(file:\/{3})/,""))
+        text: {
+            if(directoryradio.checked){
+                qsTr(destinationFolderDialog.currentFolder.toString().replace(/^(file:\/{3})/,""))
+            }else{
+                qsTr(destinationFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""))
+            }
+        }
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         color: "#ffffff"
@@ -163,8 +185,23 @@ ApplicationWindow{
         anchors.top: resulttext.bottom
         anchors.topMargin: 10          
         anchors.horizontalCenter: parent.horizontalCenter
-        onClicked: backend.makeLink(sourceFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""), 
-                                    destinationFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""))
+        
+        onClicked:{
+            var type;
+            if(fileradio.checked){
+                type = "file"
+                backend.makeLink(sourceFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""), 
+                            destinationFileDialog.currentFile.toString().replace(/^(file:\/{3})/,""),
+                            type)                
+            }else{
+                type = "folder"
+                backend.makeLink(sourceFolderDialog.currentFolder.toString().replace(/^(file:\/{3})/,""), 
+                destinationFolderDialog.currentFolder.toString().replace(/^(file:\/{3})/,""),
+                type)
+            }
+             
+
+        } 
         
     }
     
