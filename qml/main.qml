@@ -88,7 +88,7 @@ ApplicationWindow{
         title : "Open Source File"    
     }
 
-    // FolderDialog{
+    // FolderDialog {
     //     id: sourcefolderDialog
     //     title : "Open Source Folder"
     // }

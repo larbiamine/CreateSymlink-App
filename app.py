@@ -14,19 +14,21 @@ class MainWindow(QObject):
     @Slot(str, str)
     def makeLink(self, source, destination):
         if(source and destination):
-            sourceFileName = os.path.basename(source)
+            # sourceFileName = os.path.basename(source)
 
-            destinationisfile = os.path.isfile(destination) 
+            # destinationisfile = os.path.isfile(destination) 
 
-            source = "'" + source + "'"
+            source = "\"" + source + "\""
             print(source)
 
-            if(destinationisfile):
-                destination = "'" + destination + "'"
-            else:
-                destination = "'" + destination + sourceFileName +"'"    
+
+            destination = "\"" + destination + "\""
+   
             print(destination)
-            os.system("echo Hello from the other side!")
+             
+            command = "mklink "+destination+" "+source
+            print(command)
+            os.system(command)
         else:
             print("Login error!")    
 
