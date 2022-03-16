@@ -5,7 +5,7 @@ import subprocess
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtCore import QObject, Slot, Signal
-
+import PySide6.QtQuick
 # Main Window Class
 class MainWindow(QObject):
     def __init__(self):
@@ -19,7 +19,7 @@ class MainWindow(QObject):
             if(source and destination and source!=destination):
                 source = "\"" + source + "\""
                 destination = "\"" + destination + "\""       
-                command = "mklink "+destination+" "+source
+                command = "mklink /H "+destination+" "+source
                 os.system(command)
                 result = "symbolic link created for \n"+destination+"\n <<===>> \n"+source
                 self.signalCreate.emit(True, result)
@@ -39,19 +39,29 @@ class MainWindow(QObject):
                 self.signalCreate.emit(True, result)
             else:
                 print("nah")    
-
+    
+    
+    @Slot()
+    def leave(self):
+        exit()
 
 # INSTACE CLASS
 
 app = QGuiApplication(sys.argv)
 engine = QQmlApplicationEngine()
 
+application_path = (
+    sys._MEIPASS
+    if getattr(sys, "frozen", False)
+    else os.path.dirname(os.path.abspath(__file__))
+)
+
 # Get Context
 main = MainWindow()
 engine.rootContext().setContextProperty("backend", main)
 
 # Load QML File
-engine.load(os.path.join(os.path.dirname(__file__), "main.qml"))
+engine.load(os.path.join(application_path, "main.qml"))
 
 # Check Exit App
 if not engine.rootObjects():

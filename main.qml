@@ -14,25 +14,37 @@ ApplicationWindow{
     height: 580
     visible: true
     title: qsTr("SymLink Creation")
-
+    
     // SET FLAGS
-    flags: Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.CustomizeWindowHint | Qt.MSWindowsFixedSizeDialogHint | Qt.WindowTitleHint
+    flags: Qt.WindowSystemMenuHint|  Qt.FramelessWindowHint | Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.CustomizeWindowHint | Qt.MSWindowsFixedSizeDialogHint | Qt.WindowTitleHint
 
     // SET MATERIAL STYLE
     Material.theme: Material.Dark
-    Material.accent: Material.LightBlue
+    Material.accent: Material.Teal
     
+    Button{
+        id: minimizeButton
+        flat : true
+        width: 40
+        text: qsTr("___")
+        anchors.right: parent.right
 
+        hoverEnabled: false
+        onClicked:{
+            window.showMinimized()
+        }   
+    }
+    
     // CREATE TOP BAR
     Rectangle{
         id: topBar
         height: 40
-        color: Material.color(Material.Blue)
+        color: Material.color(Material.Teal)
         anchors{
             left: parent.left
             right: parent.right
-            top: parent.top
-            topMargin : 50
+            top: minimizeButton.bottom
+            topMargin : 15
         }
        // radius: 10
 
@@ -168,8 +180,7 @@ ApplicationWindow{
     Text{
         id: resulttext
         horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        
+        verticalAlignment: Text.AlignVCenter    
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: destinationFileName.bottom
         font.pointSize: 10
@@ -179,13 +190,17 @@ ApplicationWindow{
 
     // BUTTON LOGIN
     Button{
-        id: buttonLogin
+        id: createButton
         width: 300
         text: qsTr("Create")
         anchors.top: resulttext.bottom
         anchors.topMargin: 10          
         anchors.horizontalCenter: parent.horizontalCenter
-        
+        background: Rectangle {
+                radius: 5
+                color: parent.down ? "#3C7C76" :
+                        (parent.hovered ? Material.color(Material.LightBlue) : Material.color(Material.Teal))
+        }    
         onClicked:{
             var type;
             if(fileradio.checked){
@@ -204,7 +219,24 @@ ApplicationWindow{
         } 
         
     }
-    
+    Button{
+        id: exitButton
+        flat : true
+        width: 100
+        text: qsTr("Exit")
+        anchors.top: createButton.bottom
+        anchors.topMargin: 10          
+        anchors.horizontalCenter: parent.horizontalCenter
+        background: Rectangle {
+            radius: 5
+            color: parent.down ? "#7A1D00" : (parent.hovered ? "#FF825C" : "#FF5722" )
+        }  
+        onClicked:{
+            backend.leave()
+        } 
+        
+    }
+
     Connections {
         target: backend
         function onSignalCreate(boolValue, returned) {
