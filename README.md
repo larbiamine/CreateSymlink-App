@@ -26,8 +26,11 @@ Use /J to create a hard link pointing to a directory, also known as a directory 
 
 For a modern user interface we're using QtQuick with Material Design
 <p align="center">
-<img src="https://user-images.githubusercontent.com/51280073/158600820-517adb7b-8041-4b1b-9e0d-114f55bfbdcb.png" width="333" height="510">
-<img src="https://user-images.githubusercontent.com/51280073/158601625-afc9960c-70de-4aa2-838f-596cdd0926ef.png" width="333" height="510">
+<img src="https://user-images.githubusercontent.com/51280073/158627119-a7550ba4-b0f0-4c4a-8ffb-67399d77be71.png" width="333" height="510">
+<img src="https://user-images.githubusercontent.com/51280073/158627626-dcfcd4d3-1aed-4270-9007-0171e98831b2.png" width="333" height="510"> 
 </p>
+
+
+
 ### Requirements:
 PySide6==6.2.3
