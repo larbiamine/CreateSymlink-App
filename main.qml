@@ -104,7 +104,7 @@ ApplicationWindow{
         width: 300
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: chooseTypeRadio.bottom
-        anchors.topMargin: 50
+        anchors.topMargin: 25
     }
 
 
@@ -144,7 +144,7 @@ ApplicationWindow{
         width: 300
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: source.bottom
-        anchors.topMargin: 50
+        anchors.topMargin: 30
     }
 
     FileDialog {

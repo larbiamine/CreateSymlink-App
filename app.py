@@ -40,7 +40,6 @@ class MainWindow(QObject):
             else:
                 print("nah")    
     
-    
     @Slot()
     def leave(self):
         exit()
