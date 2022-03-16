@@ -25,10 +25,9 @@ Use /J to create a hard link pointing to a directory, also known as a directory 
 `mklink /J Link Target`
 
 For a modern user interface we're using QtQuick with Material Design
-
-![image](https://user-images.githubusercontent.com/51280073/158600820-517adb7b-8041-4b1b-9e0d-114f55bfbdcb.png)
-![image](https://user-images.githubusercontent.com/51280073/158601625-afc9960c-70de-4aa2-838f-596cdd0926ef.png)
-
-
+<p align="center">
+<img src="https://user-images.githubusercontent.com/51280073/158600820-517adb7b-8041-4b1b-9e0d-114f55bfbdcb.png" width="333" height="510">
+<img src="https://user-images.githubusercontent.com/51280073/158601625-afc9960c-70de-4aa2-838f-596cdd0926ef.png" width="333" height="510">
+</p>
 ### Requirements:
 PySide6==6.2.3
