@@ -21,7 +21,7 @@ ApplicationWindow{
     // SET MATERIAL STYLE
     Material.theme: Material.Dark
     Material.accent: Material.Teal
-    
+
     Button{
         id: minimizeButton
         flat : true
