@@ -5,9 +5,7 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Dialogs
 import Qt.labs.platform as PlatformControls
 
-
 import QtQuick.Layouts
-
 ApplicationWindow{
     id: window 
     width: 400
